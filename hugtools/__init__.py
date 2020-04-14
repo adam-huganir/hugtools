@@ -5,6 +5,7 @@ from logging import getLogger, DEBUG, INFO
 
 hugtools_logger = getLogger(__name__)
 
+## Classes
 class HugTimer(object):
     def __init__(self, label=None, timestamps=False, log_level=0):
         """
@@ -40,6 +41,12 @@ class HugTimer(object):
         self.delta = self.stop - self.start
         print(f"{self.label} took {self.delta}")
 
+    def checkpoint(self):
+        check = datetime.now()
+        delta = check - self.start
+        print(f"{self.label} at {self.delta}")
+
+## Functions
 
 def time_function(fn):
     def wrapper(*args, **kwargs):
@@ -52,11 +59,37 @@ def time_function(fn):
         return return_var
     return wrapper
 
+from threading import Thread
+# check for freeze:
+def status_check(fn, args=[], kwargs={}, interval=2):
+    """
+    WIP
+    """
+
+    def still_running(name, args, kwargs):
+        print("Still running", 
+          f"{name}({(', '.join([repr(arg) for arg in args]) + ', ' + ', '.join([str(key) + '=' + repr(value) for key, value in kwargs.items()])).strip(', ')})")
+
+    process = Thread(target=still_running, name="status_check", args=[fn.__name__, args, kwargs])
+    process.start()
+    result = fn(*args, **kwargs)
+    process.join()
+    return result
+
+## tests
+
 def tests(*args, **kwargs):
     hugtools_logger.setLevel(INFO)
 
-    with HugTimer("Test", log_level=INFO) as timer:
-        sleep(2)
+    # print("test HugTimer")
+    # with HugTimer("Test", log_level=INFO) as timer:
+    #     sleep(2)
+
+    # print("test time_function")
+    # time_function(sleep)(2)
+
+    print("test status_check")
+    status_check(sleep, args=[10], interval=2)
 
 if __name__ == "__main__":
     tests()
