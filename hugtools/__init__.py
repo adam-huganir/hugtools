@@ -1,16 +1,39 @@
+from threading import Thread
 from contextlib import contextmanager
 from datetime import datetime
 from time import sleep
 from logging import getLogger, DEBUG, INFO
+import json
 
 hugtools_logger = getLogger(__name__)
 
-## Classes
+# Classes
+
+
+class Dummy(object):
+    pass
+
+    @classmethod
+    def from_json(cls, json_input):
+        c = cls()
+        if not isinstance(json_input, dict):
+            json_input = json.loads(json_input)
+
+        for attr_name, attr in json_input.items():
+            try:
+                int(attr_name)
+                attr_name = "_" + attr_name
+                setattr(c, attr_name, attr)
+            except ValueError:
+                setattr(c, attr_name, attr)
+        return c
+
+
 class HugTimer(object):
     def __init__(self, label=None, timestamps=False, log_level=0):
         """
         HugTimer: A context manager timer
-        
+
         Parameters
         ----------
         label : str, optional
@@ -24,7 +47,6 @@ class HugTimer(object):
         self.logger.setLevel(log_level)
         self.timestamps = timestamps
         self.label = label or "Timer"
-        
 
     def __enter__(self):
         self.start = datetime.now()
@@ -37,7 +59,7 @@ class HugTimer(object):
         self.stop = datetime.now()
         if self.timestamps:
             self.logger.debug(f"{label} stopped at {self.stop}")
-        
+
         self.delta = self.stop - self.start
         print(f"{self.label} took {self.delta}")
 
@@ -46,7 +68,8 @@ class HugTimer(object):
         delta = check - self.start
         print(f"{self.label} at {self.delta}")
 
-## Functions
+# Functions
+
 
 def time_function(fn):
     def wrapper(*args, **kwargs):
@@ -59,24 +82,28 @@ def time_function(fn):
         return return_var
     return wrapper
 
-from threading import Thread
+
 # check for freeze:
+
+
 def status_check(fn, args=[], kwargs={}, interval=2):
     """
     WIP
     """
 
     def still_running(name, args, kwargs):
-        print("Still running", 
-          f"{name}({(', '.join([repr(arg) for arg in args]) + ', ' + ', '.join([str(key) + '=' + repr(value) for key, value in kwargs.items()])).strip(', ')})")
+        print("Still running",
+              f"{name}({(', '.join([repr(arg) for arg in args]) + ', ' + ', '.join([str(key) + '=' + repr(value) for key, value in kwargs.items()])).strip(', ')})")
 
-    process = Thread(target=still_running, name="status_check", args=[fn.__name__, args, kwargs])
+    process = Thread(target=still_running, name="status_check",
+                     args=[fn.__name__, args, kwargs])
     process.start()
     result = fn(*args, **kwargs)
     process.join()
     return result
 
-## tests
+# tests
+
 
 def tests(*args, **kwargs):
     hugtools_logger.setLevel(INFO)
@@ -90,6 +117,7 @@ def tests(*args, **kwargs):
 
     print("test status_check")
     status_check(sleep, args=[10], interval=2)
+
 
 if __name__ == "__main__":
     tests()

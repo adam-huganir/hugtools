@@ -1,0 +1,7 @@
+*~
+**~
+**/.vscode
+**/.ipynb_checkpoints
+**/.cache*
+**/*.egg-info
+**/__pycache__
