@@ -1,10 +1,10 @@
-from threading import Thread
-from contextlib import contextmanager
-from datetime import datetime
-from time import sleep
-from logging import getLogger, DEBUG, INFO
 import json
+from datetime import datetime
+from logging import INFO, getLogger
+from threading import Thread
+from time import sleep
 
+__version__ = "0.1.0a2"
 hugtools_logger = getLogger(__name__)
 
 # Classes
@@ -51,14 +51,14 @@ class HugTimer(object):
     def __enter__(self):
         self.start = datetime.now()
         if self.timestamps:
-            self.logger.debug(f"{label} started at {self.start}")
+            self.logger.debug(f"{self.label} started at {self.start}")
 
         return self.start
 
     def __exit__(self, exception_type, exception_value, traceback):
         self.stop = datetime.now()
         if self.timestamps:
-            self.logger.debug(f"{label} stopped at {self.stop}")
+            self.logger.debug(f"{self.label} stopped at {self.stop}")
 
         self.delta = self.stop - self.start
         print(f"{self.label} took {self.delta}")
@@ -66,7 +66,8 @@ class HugTimer(object):
     def checkpoint(self):
         check = datetime.now()
         delta = check - self.start
-        print(f"{self.label} at {self.delta}")
+        print(f"{self.label} at {delta}")
+
 
 # Functions
 
@@ -80,6 +81,7 @@ def time_function(fn):
         hugtools_logger.debug(f"Stop {fn.__name__} at: {stop}")
         print(f"Duration: {stop - start}")
         return return_var
+
     return wrapper
 
 
@@ -92,15 +94,17 @@ def status_check(fn, args=[], kwargs={}, interval=2):
     """
 
     def still_running(name, args, kwargs):
-        print("Still running",
-              f"{name}({(', '.join([repr(arg) for arg in args]) + ', ' + ', '.join([str(key) + '=' + repr(value) for key, value in kwargs.items()])).strip(', ')})")
+        print(
+            "Still running",
+            f"{name}({(', '.join([repr(arg) for arg in args]) + ', ' + ', '.join([str(key) + '=' + repr(value) for key, value in kwargs.items()])).strip(', ')})",
+        )
 
-    process = Thread(target=still_running, name="status_check",
-                     args=[fn.__name__, args, kwargs])
+    process = Thread(target=still_running, name="status_check", args=[fn.__name__, args, kwargs])
     process.start()
     result = fn(*args, **kwargs)
     process.join()
     return result
+
 
 # tests
 

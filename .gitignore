@@ -1,7 +1,11 @@
-*~
-**~
-**/.vscode
-**/.ipynb_checkpoints
-**/.cache*
 **/*.egg-info
+**/*.pyc
+**/.cache*
+**/.idea
+**/.ipynb_checkpoints
+**/.vscode
 **/__pycache__
+**~
+.pytest_cache
+dist
+docs/build
