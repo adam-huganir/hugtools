@@ -28,3 +28,6 @@ build:
 
 doc-server:
 	python -m http.server -b localhost -d ./docs/_build/html
+
+github-pages:
+	@cd docs && make html && cp -r _build/html/* .
