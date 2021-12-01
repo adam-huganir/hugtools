@@ -1,12 +1,9 @@
 [tool.poetry]
 name = "hugtools"
-version = "0.1.0a2"
+version = "0.1.0-alpha.3"
 description = "Some common tools that I have written over time"
 authors = ["Adam Huganir <adam@huganir.com>"]
 repository = "https://github.com/adam-huganir/hugtools"
-packages = [
-    { include = "hugtools", from = "src", format = "sdist" },
-]
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -19,7 +16,6 @@ pytest = "^6.2.4"
 Sphinx = "^4.0.2"
 pre-commit = "^2.13.0"
 black = "^21.5b2"
-python-docs-theme = "^2021.5"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
