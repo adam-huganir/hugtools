@@ -30,4 +30,4 @@ doc-server:
 	python -m http.server -b localhost -d ./docs/_build/html
 
 github-pages:
-	@rm -rf html && cd docs && make html && cp -r _build/html ../html
+	@rm -rf html && cd docs && make html && cp -r _build/html/* .
