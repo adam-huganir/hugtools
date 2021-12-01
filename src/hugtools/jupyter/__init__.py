@@ -1,10 +1,9 @@
 import json
-from typing import List
+from typing import Set
 
 
-def get_all_notebook_imports(notebook_filename: str, verbose: bool = True) -> List[str]:
-    """
-    Parse a jupyter notebook and look for imports that have been used and collate them together to help
+def get_all_notebook_imports(notebook_filename: str, verbose: bool = True) -> Set[str]:
+    """Parse a jupyter notebook and look for imports that have been used and collate them together to help
     with keeping everything runnable from the top
 
     Args:
@@ -12,7 +11,7 @@ def get_all_notebook_imports(notebook_filename: str, verbose: bool = True) -> Li
         verbose (bool): whether to print to stdout
 
     Returns:
-        list[str] : the import statements found in order they occurred in the notebook
+        set[str] : the import statements found deduplicated into a set
 
     """
     with open(notebook_filename) as f:
@@ -24,4 +23,4 @@ def get_all_notebook_imports(notebook_filename: str, verbose: bool = True) -> Li
                 imports.append(line)
     if verbose:
         print("\n".join(imports))
-    return imports
+    return set(imports)

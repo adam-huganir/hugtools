@@ -16,6 +16,7 @@ pytest = "^6.2.4"
 Sphinx = "^4.0.2"
 pre-commit = "^2.13.0"
 black = "^21.5b2"
+sphinxawesome-theme = "^3.2.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

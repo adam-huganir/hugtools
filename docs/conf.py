@@ -12,10 +12,17 @@ release = "0.1.0-alpha.3"
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "classic"
+html_permalinks_icon = "<span>#</span>"
+html_theme = "sphinxawesome_theme"
 
 # -- General configuration ---------------------------------------------------
-extensions = ["sphinx.ext.autodoc", "sphinx.ext.todo", "sphinx.ext.doctest", "sphinx.ext.napoleon"]
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.todo",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.doctest",
+    "sphinx.ext.napoleon",
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]

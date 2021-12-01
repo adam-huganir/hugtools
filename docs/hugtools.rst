@@ -1,6 +1,35 @@
 hugtools package
 ================
 
+Module contents
+---------------
+
+.. automodule:: hugtools
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Submodules
+----------
+
+hugtools.util module
+^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: hugtools.util
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+hugtools.profiling module
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: hugtools.profiling
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
 Subpackages
 -----------
 
@@ -9,30 +38,4 @@ Subpackages
     hugtools.jupyter
     hugtools.nlp
 
-Submodules
-----------
 
-hugtools.profiling module
--------------------------
-
-.. automodule:: hugtools.profiling
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-hugtools.util module
---------------------
-
-.. automodule:: hugtools.util
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: hugtools
-    :members:
-    :undoc-members:
-    :show-inheritance:

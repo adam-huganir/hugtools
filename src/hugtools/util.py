@@ -29,7 +29,6 @@ def get_if_exception(
 def try_else(source: Any, target_type: Union[Type, Callable], default_type: Union[None, Type, Callable] = None) -> Any:
     """
     try to do something, and catch and return either some default operation, or the original object
-
     use sparingly, this is mostly for typecasting in comprehensions
 
     >>> try_else(10, str)

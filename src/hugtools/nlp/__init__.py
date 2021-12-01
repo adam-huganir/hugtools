@@ -7,22 +7,24 @@ def align_tokens(tokens_a: List[str], tokens_b: List[str], subword_prefix: str =
     Given two different lists of tokens from different tokenizers, we can align the indices to each other
 
     Example:
-    >>> tokens_a = ['This', 'is', 'a', 'sentence', '-', 'like', 'thingy', ',',
-    ...              'that', 'will', 'need', 'to', 'be', 'broken', 'up', 'into', 'subwords']
-    >>> tokens_b = ['This', 'is', 'a', 'sentence', '-', 'like', 'thing', '##y',
-    ...             ',', 'that', 'will', 'need', 'to', 'be', 'broken', 'up', 'into', 'sub', '##words']
+
+    >>> tokens_a = ['This', 'is', 'a', 'sentence', '-', 'like', 'thingy', ',', \
+    'that', 'will', 'need', 'to', 'be', 'broken', 'up', 'into', 'subwords']
+    >>> tokens_b = ['This', 'is', 'a', 'sentence', '-', 'like', 'thing', '##y', \
+    ',', 'that', 'will', 'need', 'to', 'be', 'broken', 'up', 'into', 'sub', '##words']
     >>> align_tokens(tokens_a, tokens_b)
-    {0: [0], 1: [1], 2: [2], 3: [3], 4: [4], 5: [5], 6: [6], 7: [6], 8: [7], 9: [8], 10: [9],
-     11: [10], 12: [11], 13: [12], 14: [13], 15: [14], 16: [15], 17: [16], 18: [16]}
+    {0: [0], 1: [1], 2: [2], 3: [3], 4: [4], 5: [5], 6: [6], 7: [6], 8: [7], 9: [8], 10: [9], 11: [10], 12: [11], \
+    13: [12], 14: [13], 15: [14], 16: [15], 17: [16], 18: [16]}
+
 
     Args:
-        tokens_a:       A list of tokens
-        tokens_b:       A second list of tokens, that should contain the same text as the first, though differently
-                        tokenized
+        tokens_a (list[str]): A list of tokens
+        tokens_b (list[str]): A second list of tokens, that should contain the same text as the first, though
+                              differently tokenized
         subword_prefix: A prefix if you have subwords, e.g. "##" common for BERT family models (default: "##")
 
     Returns:
-        A mapping of tokens_a indexes to their corresponding tokens_b token
+        dict[int, list[int]: A mapping of tokens_a indexes to their corresponding tokens_b token
 
     """
     token_map: Dict[int, List[int]] = {}
