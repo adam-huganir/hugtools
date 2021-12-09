@@ -1,7 +1,9 @@
 *~
 **~
 **/.vscode
+**/.idea
 **/.ipynb_checkpoints
 **/.cache*
 **/*.egg-info
 **/__pycache__
+/dist/
