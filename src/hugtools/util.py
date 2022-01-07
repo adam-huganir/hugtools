@@ -1,6 +1,22 @@
 from typing import Any, Callable, List, Optional, Type, Union
 
 
+class DecodeRing:
+    def __init__(self, mapping, default=None):
+        self._operations = mapping
+
+    def decode(self, obj):
+        if isinstance(obj, (list, set, tuple)):
+            return [self.decode(item) for item in obj]
+        if isinstance(obj, dict):
+            return {k: self.decode(item) for k, item in obj.items()}
+        for type_, operation in self._operations.items():
+            if isinstance(obj, type_):
+                if isinstance(operation, tuple):
+                    operation, *args
+                return operation()
+
+
 def get_if_exception(
     callable: Callable,
     default: Optional[Any] = None,
