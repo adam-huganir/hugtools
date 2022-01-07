@@ -1,3 +1,5 @@
+import os
+from tempfile import TemporaryDirectory
 from typing import Any, Callable, List, Optional, Type, Union
 
 
@@ -71,3 +73,15 @@ def try_else(source: Any, target_type: Union[Type, Callable], default_type: Unio
         return target_type(source)
     except Exception:
         return default_type(source) if default_type else source
+
+
+class Sandbox(TemporaryDirectory):
+    """A simple wrapper around TemproraryDirectory that changes the directory for you"""
+
+    def __init__(self, suffix=None, prefix=None, dir=None):
+        self._original_working_dir = os.getcwd()
+        super().__init__(suffix, prefix, dir)
+
+    def __exit__(self, exc, value, tb):
+        super().__exit__(exc, value, tb)
+        os.chdir(self._original_working_dir)
