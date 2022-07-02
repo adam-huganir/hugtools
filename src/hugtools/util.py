@@ -1,28 +1,27 @@
 import os
+import re
 from tempfile import TemporaryDirectory
-from typing import Any, Callable, List, Optional, Type, Union
+from typing import Any, Callable, List, Optional, Tuple, Type, Union
+
+_NOT_WHITE = re.compile(r"^\s*")
 
 
-class DecodeRing:
-    def __init__(self, mapping, default=None):
-        self._operations = mapping
-
-    def decode(self, obj):
-        if isinstance(obj, (list, set, tuple)):
-            return [self.decode(item) for item in obj]
-        if isinstance(obj, dict):
-            return {k: self.decode(item) for k, item in obj.items()}
-        for type_, operation in self._operations.items():
-            if isinstance(obj, type_):
-                if isinstance(operation, tuple):
-                    operation, *args
-                return operation()
+def trimdent(text: str, indent=None) -> str:
+    """Given a block quote, this will deindent it on the assumption that the minimum indent of all the lines should
+    be 0 indent. The main reason I created this is I hate smushing multiline text strings within functions against
+    the left rail."""
+    indent = (
+        indent
+        if indent is not None
+        else min(len(_NOT_WHITE.search(line).group()) for line in text.split("\n") if line.strip())  # type: ignore
+    )
+    return "\n".join(line[indent:] if len(line) > indent else line for line in text.split("\n"))
 
 
 def get_if_exception(
     callable: Callable,
     default: Optional[Any] = None,
-    exception_types: Union[Type[Exception], List[Type[Exception]]] = Exception,
+    exception_types: Union[Type[Exception], List[Type[Exception]], Tuple[Type[Exception]]] = Exception,
 ):
     """
     Given a callable, (easiest to implement this as a lambda, e.g. `lambda: my_func(a, something=b)`
@@ -37,10 +36,12 @@ def get_if_exception(
                                                              any exception. This can be either a single exception
                                                              or a list of exceptions
     """
-    exceptions: List[Type[Exception]] = exception_types if isinstance(exception_types, list) else [exception_types]
+    exceptions: Tuple[Type[Exception], ...] = (
+        tuple(exception_types) if isinstance(exception_types, (list, tuple)) else (exception_types,)
+    )
     try:
         return callable()
-    except tuple(exceptions):
+    except exceptions:
         return default
 
 
@@ -76,11 +77,15 @@ def try_else(source: Any, target_type: Union[Type, Callable], default_type: Unio
 
 
 class Sandbox(TemporaryDirectory):
-    """A simple wrapper around TemproraryDirectory that changes the directory for you"""
+    """A simple wrapper around TemporaryDirectory that changes the directory for you"""
 
     def __init__(self, suffix=None, prefix=None, dir=None):
         self._original_working_dir = os.getcwd()
         super().__init__(suffix, prefix, dir)
+
+    def __enter__(self):
+        super().__enter__()
+        os.chdir(self.name)
 
     def __exit__(self, exc, value, tb):
         super().__exit__(exc, value, tb)

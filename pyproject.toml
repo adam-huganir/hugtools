@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hugtools"
-version = "0.1.0-alpha.3"
+version = "0.1.0-alpha.4"
 description = "Some common tools that I have written over time"
 authors = ["Adam Huganir <adam@huganir.com>"]
 repository = "https://github.com/adam-huganir/hugtools"

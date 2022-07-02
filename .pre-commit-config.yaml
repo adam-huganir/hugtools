@@ -11,7 +11,7 @@
 
 # For supported hooks, this will let it know what to check for (e.g. `black`)
 default_language_version:
-  python: python3.8
+  python: python3.9
 
 # Each of these represents a step to run
 repos:
