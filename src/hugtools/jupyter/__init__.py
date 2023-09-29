@@ -18,9 +18,12 @@ def get_all_notebook_imports(notebook_filename: str, verbose: bool = True) -> Se
         ipynb = json.load(f)
     imports = []
     for cell in ipynb["cells"]:
-        for line in cell["source"]:
-            if line.startswith("import") or (line.startswith("from") and "import in line"):
-                imports.append(line)
+        imports.extend(
+            line
+            for line in cell["source"]
+            if line.startswith("import")
+            or (line.startswith("from") and "import in line")
+        )
     if verbose:
         print("\n".join(imports))
     return set(imports)
